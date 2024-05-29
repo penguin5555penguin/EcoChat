@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanup Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            color: rgb(151, 151, 151);
+            font-size: 75px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        a {
+            color: rgb(151, 151, 151);
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 0px;
+            text-decoration: underline;
+            margin-top: 100px;
+        }
+
+        .date-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .date-item {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: rgb(128, 128, 128);
+            font-size: 30px;
+            width: 300px;
+
+        }
+
+        .date-item:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cleanup sign-ups for {{ date }}</h2>
+    <ul class="date-list">
+        {% for user in users %}
+        <li class="date-item" name="date">{{ user }}</li>
+        {% endfor %}
+        
+        {% if signedUp %}
+            <a onclick="location.href='/cleanupLeaveAuth/date/{{ date }}'">Leave this cleanup?</a>
+        {% else %}
+            <a onclick="location.href='/cleanupSignupAuth/date/{{ date }}'">Sign up for this cleanup?</a>
+        {% endif %}
+        
+        <a href="/cleanups">Back?</a>
+    </ul>
+    
+
+</body>
+</html>

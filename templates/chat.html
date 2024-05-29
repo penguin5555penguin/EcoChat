@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Chat</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    #messages {
+        width: 80%; /* Set the width to 80% of the viewport width */
+        height: 60vh; /* Fixed height */
+        overflow-y: auto;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid black;
+        border-radius: 15px;
+        background-color: #f0f0f0;
+        scrollbar-width: none;
+        display: flex; /* Use flexbox */
+        flex-direction: column; /* Align items vertically */
+        align-items: flex-start; /* Align items to the start of the container (left-aligned) */
+    }
+
+    #inputContainer {
+        width: 80%; /* Set the width to 80% of the viewport width */
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row; /* Change to row for horizontal alignment */
+        align-items: center;
+        justify-content: space-between; /* Spread items to edges */
+        border: 2px solid black; /* Border around the input container */
+        border-radius: 15px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    #inputContainer input[type="text"] {
+        flex: 1; /* Grow to fill available space */
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+        /* outline: none; Remove input outline */
+    }
+
+    #sendBtn {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1.5px solid rgb(107, 107, 107);
+        width: 50%;
+        text-align: center;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+
+    #username {
+        border: 1.5px solid rgb(107, 107, 107);
+        border-radius: 15px;
+    }
+
+    #userPoints {
+        border: 1.5px solid rgb(107, 107, 107);
+        border-radius: 15px;
+    }
+
+    #message {
+        border: 1.5px solid rgb(107, 107, 107);
+        border-radius: 15px;
+        width: 100%;
+    }
+
+    .otherMsg {
+        border: 1.5px solid rgb(107, 107, 107);
+        border-radius: 10px;
+        background-color: aliceblue;
+        padding: 10px;
+        display: inline-block;
+        margin-bottom: 5px;
+        min-width: 100px;
+    }
+
+    .yourMsg {
+        border: 1.5px solid rgb(107, 107, 107);
+        border-radius: 10px;
+        background-color: rgb(213, 230, 245);
+        padding: 10px;
+        display: inline-block;
+        margin-bottom: 5px;
+        margin-left: auto;
+        min-width: 100px;
+    }
+
+    .msgUsername {
+        font-size: large;
+    }
+
+    .msgContent {
+        font-size: small;
+    }
+
+    h1 {
+        color: rgb(134, 134, 133);
+        font-size: 70px;
+    }
+    a {
+        margin-top: -30px;
+        color: rgb(151, 151, 151);
+        font-size: 30px;
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    #createCleanup {
+        margin-top: 5px;
+    }
+</style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>EcoChat</h1>
+    <a href="/cleanups">View Cleanups?</a>
+    <a href="/createCleanup" id="createCleanup">Create Cleanup?</a>
+    <a href="/yourCleanups" id="createCleanup">Your Cleanups?</a>
+    <div id="messages"></div>
+
+    <div id="inputContainer">
+        <input type="text" id="username" value="{{ username }}" hidden>
+        <input type="text" id="userPoints" value="None" hidden>
+        <input type="text" id="message" placeholder="Message" required>
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log('start');
+            var link = 'http://' + document.domain + ':' + location.port;
+            // var link = 'http://192.168.0.87:5000';
+            // var link = 'http://localhost:5000';
+            var socket = io.connect(link);
+
+            socket.on('connect', function() {
+                console.log('User Connected');
+                socket.send({
+                    'username': "{{ username }}",
+                    'message': 'Client Connected',
+                    'userPoints': 'Connected...'
+                });
+
+            });
+          
+            socket.on('message', function(data) {
+                console.log('Message:', data);
+                
+                if (data.message.trim() == '') {
+                    return
+                }
+
+                if (data.username == $('#username').val()) {
+                    var messageClass = 'yourMsg'
+                } else {
+                    var messageClass = 'otherMsg'
+                }
+                
+                $('#userPoints').val(data.userPoints);
+                
+
+                var messageDiv = $('<div>').addClass(messageClass);
+                
+                var text = data.username + ' - ' + data.userPoints.toString();
+
+                var usernamePara = $('<p>').addClass('msgUsername').text(text);
+                var messagePara = $('<p>').addClass('msgContent').text(data.message);
+                
+                messageDiv.append(usernamePara, messagePara)
+
+                $('#messages').append(messageDiv);
+
+                if (data.connect != true) {
+                    $('#messages').animate({ scrollTop: $('#messages')[0].scrollHeight }, 'smooth');
+                }
+                $('#message').val('');
+            });
+
+            socket.on('clearMessages', function(data) {
+                var bigMessageDiv = document.getElementById('messages')
+                while (bigMessageDiv.firstChild) {
+                    bigMessageDiv.removeChild(bigMessageDiv.lastChild);
+                }
+            });
+
+            socket.on('reloadPage', function(data) {
+                window.location.reload();
+            });
+
+            $('#sendBtn').on('click', function() {
+                sendMessage();
+            });
+
+            $('#message').on('keydown', function(event) {
+                if (event.which == 13) {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                var message = $('#message').val().trim();
+                if (message !== '') {
+                    socket.send({
+                        'username': $('#username').val(),
+                        'message': message,
+                        'userPoints': $('#userPoints').val()
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

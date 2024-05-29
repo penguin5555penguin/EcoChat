@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Cleanup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #createContainer {
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #createBtn h2 {
+            margin-bottom: 20px;
+        }
+
+        
+
+        #createBtn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1.5px solid rgb(107, 107, 107);
+            background-color: rgb(213, 230, 245);
+        }
+
+        #returnBtn {
+            margin-top: 30px;
+            width: 170px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1.5px solid rgb(107, 107, 107);
+            background-color: rgb(220, 233, 244);
+        }
+
+        input[type="date"] {
+            width: calc(100% - 22px); /* Adjust width to account for padding and border */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="createContainer">
+        <h2>Create Cleanup</h2>
+        <form action="/createCleanupAuth" method="POST">
+            <input type="date" name="date" id="date">
+            <button type="submit" id="createBtn">Create</button>
+            
+        </form>
+    </div>
+    <button id="returnBtn" onclick="window.location.href='/chat'"">Return to chat?</div>
+
+    <script>
+        var dateInput = document.getElementById('date');
+        // Set minimum and default date values
+        var today = new Date();
+        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        dateInput.min = formattedDate;
+        dateInput.value = formattedDate;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #registerContainer {
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #registerContainer h2 {
+            margin-bottom: 20px;
+        }
+
+        #registerContainer input[type="text"],
+        #registerContainer input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1.5px solid rgb(107, 107, 107);
+            border-radius: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        #registerBtn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1.5px solid rgb(107, 107, 107);
+            background-color: rgb(213, 230, 245);
+        }
+
+        #loginBtn {
+            margin-top: 30px;
+            width: 170px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1.5px solid rgb(107, 107, 107);
+            background-color: rgb(220, 233, 244);
+        }
+    </style>
+</head>
+<body>
+    <div id="registerContainer">
+        <h2>Register</h2>
+        <form action="/registerAuth" method="POST">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit" id="registerBtn">Register</button>
+            
+        </form>
+    </div>
+    <button id="loginBtn" onclick="window.location.href='/login'"">Have an account?</div>
+</body>
+</html>
