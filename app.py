@@ -258,7 +258,6 @@ def initializeOneUsersPointsDb(username):
 
 def getOneUsersPoints(username):
     for user, userPoints in readUserPointsDb():
-        print(user, userPoints, username)
         if user == username:
             return userPoints
     raise Exception('User not found!')
@@ -566,12 +565,6 @@ def yourCleanups():
     else:
         return redirect('/login')
 
-@app.route('/logout')
-def logout():
-    session['loggedIn'] = False
-    return redirect('/login') 
-
-
 # * websocket operations
 
 @socketio.on('connect')
@@ -624,11 +617,8 @@ def handleMessage(msg):
             addMessageDb(msg['username'], msg['message'], msg['userPoints'])
             send(msg, broadcast=True)
             
-
-@app.errorhandler(404)
-def notExistent(e):
-    return plainTextPage('Page Not Found!', '/', 'Go back to safety?')         
+            
     
 if __name__ == '__main__':
     # socketio.run(app, host='localhost', port=5000)
-    socketio.run(app, host='0.0.0.0', port=10000, allow_unsafe_werkzeug=True)    
+    socketio.run(app, host='0.0.0.0', port=10000, allow_unsafe_werkzeug=True)   
