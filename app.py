@@ -258,6 +258,7 @@ def initializeOneUsersPointsDb(username):
 
 def getOneUsersPoints(username):
     for user, userPoints in readUserPointsDb():
+        print(user, userPoints, username)
         if user == username:
             return userPoints
     raise Exception('User not found!')
