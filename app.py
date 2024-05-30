@@ -356,6 +356,9 @@ def checkToClearAnyExpiredCleanups():
 
 app.secret_key = 'verySecretKey295738$&*#&./,'
 
+# overrides the secret key set up
+clearAllSessions()
+
 createUsersTable()
 createMessagesTable()
 createCleanupsTable()
