@@ -565,6 +565,15 @@ def yourCleanups():
     else:
         return redirect('/login')
 
+@app.route('/logout')
+def logout():
+    session['loggedIn'] = False
+    return redirect('/login') 
+
+@app.errorhandler(404)
+def notExistent(e):
+    return plainTextPage('Page Not Found!', '/', 'Go back to safety?')   
+
 # * websocket operations
 
 @socketio.on('connect')
