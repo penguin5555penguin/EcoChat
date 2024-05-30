@@ -521,7 +521,7 @@ def viewOneCleanup(date):
     if session.get('loggedIn'):
         date = date.replace('%20', ' ')
 
-        if usersInACleanupDate(getYYYYMMDD(date)):
+        if session['username'] in usersInACleanupDate(getYYYYMMDD(date)):
             signedUp = True
         else:
             signedUp = False
